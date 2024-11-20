@@ -1,0 +1,42 @@
+.container {
+    max-width: 1200px; /* Set a max width for the container */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add some padding */
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    margin: -10px; /* Adjust margin for spacing */
+}
+
+.col-lg-6, .col-md-6, .col-sm-12, .col-xs-12 {
+    padding: 10px; /* Add padding to columns */
+}
+
+.form-label {
+    margin-bottom: 15px; /* Space between label and textarea */
+}
+
+.form-control {
+    width: 100%; /* Make textarea full width */
+    height: 100px; /* Set a height for the textarea */
+    padding: 10px; /* Add padding inside the textarea */
+    border: 1px solid #ccc; /* Add border */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+.card {
+    padding: 20px; /* Add padding inside the card */
+    border: 1px solid #ddd; /* Add border to the card */
+    border-radius: 8px; /* Rounded corners for the card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+    background-color: #f9f9f9; /* Light background color */
+}
+
+@media (max-width: 768px) {
+    .form-control {
+        height: auto; /* Adjust height for smaller screens */
+    }
+}
