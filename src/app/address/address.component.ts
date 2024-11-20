@@ -35,7 +35,7 @@ export class AddressComponent implements OnInit {
     this.addressService.getDropdownData()
       .subscribe((response: any) => {
         this.databases = response.map((db: any) => {
-          return { label: db.index }; 
+          return { label: db.index   }; 
         });
       }, error => {
         console.error("Error fetching dropdown data", error);
