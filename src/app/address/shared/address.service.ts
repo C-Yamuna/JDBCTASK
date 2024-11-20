@@ -23,12 +23,16 @@ export class AddressService {
     return this.http.post('http://localhost:8080/schemas/update-db', payload); // Replace with your actual endpoint
   }
 
-  downloadQueryResults(queryPayload: { sqlQuery: string, databases: any[] }): Observable<Blob> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.baseUrl}`, queryPayload, {
-      headers: headers,
-      responseType: 'blob' // Expecting binary data (CSV)
+  // downloadQueryResults(queryPayload: { sqlQuery: string, databases: any[] }): Observable<Blob> {
+  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   return this.http.post(`${this.baseUrl}`, queryPayload, {
+  //     headers: headers,
+  //     responseType: 'blob' // Expecting binary data (CSV)
+  //   });
+  // }
+  downloadQueryResults(payload: any): Observable<Blob> {
+    return this.http.post('http://localhost:8080/schemas/download_query_results', payload, {
+      responseType: 'blob'
     });
   }
-  
 }

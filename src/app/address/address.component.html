@@ -15,8 +15,10 @@
                 <label for="description">Data Bases</label>
                 <div class="multiselect">
                     <p-multiSelect id="societyCoveredVillages" [options]="databases" [virtualScroll]="true"
-                        placeholder="Select Databases" [(ngModel)]="selectedDatabases"
+                        placeholder="Select Databases" [(ngModel)]="selectedDatabases"  optionLabel="label" 
+                        optionValue="value"
                         (ngModelChange)="checkEnableUpdate()"></p-multiSelect>
+
                 </div>
             </div>
         </div>

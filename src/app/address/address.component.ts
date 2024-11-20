@@ -17,7 +17,8 @@ export class AddressComponent implements OnInit {
     autoUpload: false
   });
   uploadFlagSociety: boolean = true; 
-  selectedDatabases: any[] = [];
+  // selectedDatabases: any[] = [];
+  selectedDatabases: number[] = [];
   address: Address = new Address();
   sqlQuery: string = '';
   isUpdateEnabled: boolean = false;
@@ -31,15 +32,23 @@ export class AddressComponent implements OnInit {
     this.getDatabaseDropdown();
   }
 
+  // getDatabaseDropdown() {
+  //   this.addressService.getDropdownData()
+  //     .subscribe((response: any) => {
+  //       this.databases = response.map((db: any) => {
+  //         return { label: db.dbName,value:db.index   }; 
+  //       });
+  //     }, error => {
+  //       console.error("Error fetching dropdown data", error);
+  //     });
+  // }
   getDatabaseDropdown() {
-    this.addressService.getDropdownData()
-      .subscribe((response: any) => {
-        this.databases = response.map((db: any) => {
-          return { label: db.index   }; 
-        });
-      }, error => {
-        console.error("Error fetching dropdown data", error);
-      });
+    this.addressService.getDropdownData().subscribe((response: any) => {
+      this.databases = response.map((db: any) => ({
+        label: db.dbName, // Human-readable label
+        value: db.index   // Identifier for the database
+      }));
+    });
   }
 
   // Enable or disable Update button based on conditions
@@ -73,77 +82,35 @@ export class AddressComponent implements OnInit {
       }
     );
   }
-
-
-  // downloadQueryResultsAsCSV() {
-  //   const queryPayload = {
-  //     sqlQuery: this.sqlQuery,
-  //     databases: this.selectedDatabases
-  //   };
-
-  //   this.addressService.downloadQueryResults(queryPayload).subscribe((response: Blob) => {
-  //     const data: Blob = new Blob([response], { type: 'text/csv' });
-  //     saveAs(data, 'QueryResults.csv');
-  //     this.msgs = [{ severity: 'success', detail: 'CSV file downloaded successfully.' }];
-
-  //     // Clear success message after 2 seconds
-  //     setTimeout(() => {
-  //       this.msgs = [];
-  //     }, 2000);
-  //   },
-  //   error => {
-  //     this.msgs = [{ severity: 'error', detail: 'Failed to download CSV. Server might be down.' }];
-
-  //     // Clear error message after 2 seconds
-  //     setTimeout(() => {
-  //       this.msgs = [];
-  //     }, 2000);
-  //   });
-  // }
-
  
   downloadQueryResultsAsCSV() {
-    // Payload to send to the backend
     const queryPayload = {
-      sqlQuery: this.sqlQuery,
-      databases: this.selectedDatabases,
+      sqlQuery: this.sqlQuery?.trim(), // Ensure SQL query is not null or empty
+      databases: this.selectedDatabases // Array of selected database values
     };
-
+  
+    console.log('Payload being sent to backend:', queryPayload);
+  
+    if (!queryPayload.sqlQuery || queryPayload.databases?.length === 0) {
+      console.error('SQL Query or Databases are missing!');
+      return;
+    }
+  
     this.addressService.downloadQueryResults(queryPayload).subscribe(
       (response: Blob) => {
-        if (response) {
-          // Create a Blob from the response and download it as a CSV file
-          const data: Blob = new Blob([response], { type: 'text/csv' });
-          const filename = 'QueryResults.csv';
-          const link = document.createElement('a');
-          link.href = window.URL.createObjectURL(data);
-          link.download = filename;
-          link.click();
-
-          // Success message
-          this.msgs = [{ severity: 'success', detail: 'CSV file downloaded successfully.' }];
-        } else {
-          // No data returned from the server
-          this.msgs = [{ severity: 'error', detail: 'No data available for download.' }];
-        }
-
-        // Clear messages after 2 seconds
-        setTimeout(() => {
-          this.msgs = [];
-        }, 2000);
+        const data: Blob = new Blob([response], { type: 'text/csv' });
+        const filename = 'QueryResults.csv';
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(data);
+        link.download = filename;
+        link.click();
       },
       (error) => {
-        // Handle errors
         console.error('Error downloading CSV:', error);
-        this.msgs = [{ severity: 'error', detail: 'Failed to download CSV. Server might be down.' }];
-
-        // Clear error messages after 2 seconds
-        setTimeout(() => {
-          this.msgs = [];
-        }, 2000);
       }
     );
   }
+  
 
   
 }
