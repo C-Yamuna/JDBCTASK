@@ -12,4 +12,5 @@ export const environment = {
   // erp_rbac: 'http://192.168.1.62:8079/ERPRbac/api/v1',
   // erp_savings_bank :'http://localhost:9031'
   apiUrl: 'http://localhost:8080/schemas',
+  apiBaseUrl: 'http://localhost:8080/schemas'
 };
