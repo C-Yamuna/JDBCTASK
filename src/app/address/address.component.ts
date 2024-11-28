@@ -19,11 +19,14 @@ export class AddressComponent implements OnInit {
   uploadFlagSociety: boolean = true;
   address: Address = new Address();
   sqlQuery: string = '';
-  isUpdateEnabled: boolean = false;
   msgs: any[] = [];
   databases: { label: string; value: string }[] = []; // Dropdown options
   selectedDatabases: string[] = []; // Stores selected database indices
   message: string = ''; 
+
+  isUpdateEnabled: boolean = true; // Update button state
+  isDownloadQueryEnabled: boolean = true; // Download Query button state
+  isDownloadDumpsEnabled: boolean = true; // 
 
   constructor(private addressService: AddressService) { }
 
@@ -94,17 +97,54 @@ export class AddressComponent implements OnInit {
   }
 
  
+
   checkEnableUpdate() {
-    if (this.selectedDatabases.length === 1) {
-      this.message = ''; // Clear any previous message
-    } else if (this.selectedDatabases.length > 1) {
-      this.message = 'Please select only one database.';
+    
+    const trimmedQuery = this.sqlQuery.trim().toLowerCase();
+
+    // if (this.selectedDatabases.length === 1) {
+    //       this.message = ''; // Clear any previous message
+    //     } else if (this.selectedDatabases.length > 1) {
+    //       this.message = 'Please select only one database.';
+    //     }
+
+    // Enable Update Query button if the query starts with "update" and databases are selected
+    if (trimmedQuery.startsWith('update') && this.selectedDatabases.length > 0) {
+     
+      this.isUpdateEnabled = false;
+      this.isDownloadDumpsEnabled = true;
+      this.isDownloadQueryEnabled = true;// Enable Update button
+       // Disable Download Dumps button
+    }
+    // Enable Download Query button if the query starts with "select" and databases are selected
+    else if (trimmedQuery.startsWith('select') && this.selectedDatabases.length > 0) {
+      
+      // this.isUpdateEnabled = false; // Disable Update button
+      this.isDownloadQueryEnabled = false;
+      this.isDownloadDumpsEnabled = true;
+      this.isUpdateEnabled = true;// Enable Download Query button
+
+      // this.isDownloadDumpsEnabled = false; // Disable Download Dumps button
+    }
+    // Default state for other conditions
+    else {
+      if(this.selectedDatabases.length > 0){
+        this.isDownloadDumpsEnabled = false;
+        this.isDownloadQueryEnabled = true;
+        this.isUpdateEnabled = true;
+      }
+      else{
+        this.isDownloadDumpsEnabled = false;
+        this.isDownloadQueryEnabled = false;
+        this.isUpdateEnabled = false;
+      }
+       // Enable Dumps button only if one database is selected
     }
   }
 
   // Download database dump
   downloadDatabaseDump() {
-    if (this.selectedDatabases.length === 1) {
+    if (this.selectedDatabases.length === 1  ) {
       const dbIndex = this.selectedDatabases[0];
       this.addressService.downloadDatabaseDump(dbIndex).subscribe(
         (blob: Blob) => {

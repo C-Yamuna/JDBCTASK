@@ -14,3 +14,4 @@ export const environment = {
   apiUrl: 'http://localhost:8080/schemas',
   apiBaseUrl: 'http://localhost:8080/schemas'
 };
+

@@ -14,9 +14,13 @@
             <div class="form-label">
                 <label for="description">Data Bases</label>
                 <div class="multiselect">
-                    <p-multiSelect id="databases" [options]="databases" [virtualScroll]="true"
+                    <!-- <p-multiSelect id="databases" [options]="databases" [virtualScroll]="true"
                         placeholder="Select Databases" [(ngModel)]="selectedDatabases" optionLabel="label"
                         optionValue="value" (ngModelChange)="checkEnableUpdate()">
+                    </p-multiSelect> -->
+                    <p-multiSelect id="databases" [options]="databases" [virtualScroll]="true"
+                        [virtualScrollItemSize]="30" placeholder="Select Databases" [(ngModel)]="selectedDatabases"
+                        optionLabel="label" optionValue="value" (ngModelChange)="checkEnableUpdate()">
                     </p-multiSelect>
 
                 </div>
@@ -34,18 +38,15 @@
                 <!-- <button pButton type="button" class="btn btn-lg global-backgroundcolor-light"
                     [disabled]="isUpdateEnabled" label="Update Query" (click)="executeUpdate()"></button> -->
 
-                    <button type="button" [disabled]="isUpdateEnabled"
-                    (click)="executeUpdate()">
+                <button type="button" (click)="executeUpdate()" [disabled]="isUpdateEnabled">
                     Update Query
                 </button>
 
-                <button type="button" [disabled]="!sqlQuery || selectedDatabases.length === 0"
-                    (click)="downloadQueryResultsAsCSV()">
+                <button type="button" (click)="downloadQueryResultsAsCSV()" [disabled]="isDownloadQueryEnabled">
                     Download Query
                 </button>
 
-                <button [disabled]="selectedDatabases.length !== 1" (click)="downloadDatabaseDump()"
-                    class="btn btn-primary">
+                <button (click)="downloadDatabaseDump()" class="btn btn-primary" [disabled]="isDownloadDumpsEnabled">
                     Download Dumps
                 </button>
             </div>
