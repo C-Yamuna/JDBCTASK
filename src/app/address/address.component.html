@@ -1,0 +1,55 @@
+<div class="col-12">
+    <div class="row">
+        <!-- SQL Query Input -->
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+            <div class="form-label">
+                <label><span class="red">*</span>SQL Query</label>
+                <input pInputText id="bunit_txt_name" maxlength="100" type="text" [(ngModel)]="sqlQuery"
+                    (ngModelChange)="checkEnableUpdate()" placeholder="Enter SQL Query" />
+            </div>
+        </div>
+
+        <!-- States MultiSelect Dropdown -->
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+            <div class="form-label">
+                <label for="description">Data Bases</label>
+                <div class="multiselect">
+                    <!-- <p-multiSelect id="databases" [options]="databases" [virtualScroll]="true"
+                        placeholder="Select Databases" [(ngModel)]="selectedDatabases" optionLabel="label"
+                        optionValue="value" (ngModelChange)="checkEnableUpdate()">
+                    </p-multiSelect> -->
+                    <p-multiSelect id="databases" [options]="databases" [virtualScroll]="true"
+                        [virtualScrollItemSize]="30" placeholder="Select Databases" [(ngModel)]="selectedDatabases"
+                        optionLabel="label" optionValue="value" (ngModelChange)="checkEnableUpdate()">
+                    </p-multiSelect>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Buttons for Update and Download -->
+<div>
+    <div class="ui-g-12 p-0 mt-4 outline-styl-skithisstep">
+        <div class="ui-g form-group d-flex">
+            <div class="pull-right">
+                <!-- Update Button (Enabled only when conditions are met) -->
+                <!-- <button pButton type="button" class="btn btn-lg global-backgroundcolor-light"
+                    [disabled]="isUpdateEnabled" label="Update Query" (click)="executeUpdate()"></button> -->
+
+                <button type="button" (click)="executeUpdate()" [disabled]="isUpdateEnabled">
+                    Update Query
+                </button>
+
+                <button type="button" (click)="downloadQueryResultsAsCSV()" [disabled]="isDownloadQueryEnabled">
+                    Download Query
+                </button>
+
+                <button (click)="downloadDatabaseDump()" class="btn btn-primary" [disabled]="isDownloadDumpsEnabled">
+                    Download Dumps
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
